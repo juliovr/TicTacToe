@@ -5,21 +5,23 @@
  */
 package tictactoe;
 
-import fotos.ImagenFondo;
-import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author julio
  */
-public class TicTacToe extends javax.swing.JFrame {
+public class TicTacToe extends javax.swing.JFrame implements ActionListener {
 
     private int cont;
-    private boolean b1, b2, b3, b4, b5, b6, b7, b8, b9;
-    private final ImagenFondo circulo;
-    private final ImagenFondo x;
     private boolean terminado;
+    private Boton[][] tablero;
+    private final URL O;
+    private final URL X;
     
     /**
      * Creates new form TicTacToe
@@ -29,18 +31,66 @@ public class TicTacToe extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         cont = 0;
-        b1 = false;
-        b2 = false;
-        b3 = false;
-        b4 = false;
-        b5 = false;
-        b6 = false;
-        b7 = false;
-        b8 = false;
-        b9 = false;
-        circulo = new ImagenFondo("circulo.jpg");
-        x = new ImagenFondo("x.jpg");
         terminado = false;
+        tablero = new Boton[3][3];
+        O = getClass().getResource("/fotos/o.jpg");
+        X = getClass().getResource("/fotos/x.jpg");
+        
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                tablero[i][j] = new Boton();
+                tablero[i][j].setBounds((i * 80) + 5, (j * 80) + 5, 80, 80);
+                tablero[i][j].addActionListener(this);
+                add(tablero[i][j]);
+            }
+        }
+    }
+   
+    /**
+     * Acción para todos los botones que se encuentran en el tablero.
+     * Recorre todos los botones para saber cual es el que se presionó, si el 
+     * botón nunca ha sido presionado y el juego aún no termina, llama al 
+     * método marcar.
+     * @param e 
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (e.getSource() == tablero[i][j]) {
+                    if (tablero[i][j].isMarcado() == false && terminado == false) {
+                        marcar(tablero[i][j]);
+                    }
+                }
+            }
+        }
+        
+        evaluar(tablero);
+        terminar();
+        jugarDenuevo();
+        cont++;
+    }
+    
+    /**
+     * Realizar el marcado del botón colocando una O / X según corresponda y 
+     * luego remueve el ActionListener para que no haga nada si el botón se 
+     * vuelve a presionar.
+     * @param boton objeto boton que se selecciona proveniente del tablero
+     */
+    private void marcar(Boton boton) {
+        ImageIcon icono;
+        char foto;
+        boton.setMarcado(true);
+        if (cont % 2 == 0) {
+            icono = new ImageIcon(O);
+            foto = 'o';
+        } else {
+            icono = new ImageIcon(X);
+            foto = 'x';
+        }
+        boton.setIcon(icono);
+        boton.setFoto(foto);
+        boton.removeActionListener(this);
     }
 
     /**
@@ -52,382 +102,96 @@ public class TicTacToe extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 242, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+            .addGap(0, 244, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (b1 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton1.setBorder(circulo);
-                jButton1.setText(circulo.nombreFoto);
-            } else {
-                jButton1.setBorder(x);
-                jButton1.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton1, jButton2, jButton3};
-            JButton[] columna = {jButton1, jButton4, jButton7};
-            JButton[] diagonal = {jButton1, jButton5, jButton9};
-            evaluar(fila);
-            evaluar(columna);
-            evaluar(diagonal);
-            
-            terminar();
-            //
-            
-            b1 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (b2 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton2.setBorder(circulo);
-                jButton2.setText(circulo.nombreFoto);
-            } else {
-                jButton2.setBorder(x);
-                jButton2.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton2, jButton1, jButton3};
-            JButton[] columna = {jButton2, jButton5, jButton8};
-            evaluar(fila);
-            evaluar(columna);
-            
-            terminar();
-            //
-            
-            b2 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (b3 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton3.setBorder(circulo);
-                jButton3.setText(circulo.nombreFoto);
-            } else {
-                jButton3.setBorder(x);
-                jButton3.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton3, jButton1, jButton2};
-            JButton[] columna = {jButton3, jButton6, jButton9};
-            JButton[] diagonal = {jButton3, jButton5, jButton7};
-            evaluar(fila);
-            evaluar(columna);
-            evaluar(diagonal);
-            
-            terminar();
-            //
-            
-            b3 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if (b4 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton4.setBorder(circulo);
-                jButton4.setText(circulo.nombreFoto);
-            } else {
-                jButton4.setBorder(x);
-                jButton4.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton4, jButton5, jButton6};
-            JButton[] columna = {jButton4, jButton1, jButton7};
-            evaluar(fila);
-            evaluar(columna);
-            
-            terminar();
-            //
-            
-            b4 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if (b5 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton5.setBorder(circulo);
-                jButton5.setText(circulo.nombreFoto);
-            } else {
-                jButton5.setBorder(x);
-                jButton5.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton5, jButton4, jButton6};
-            JButton[] columna = {jButton5, jButton2, jButton8};
-            JButton[] diagonal1 = {jButton5, jButton1, jButton9};
-            JButton[] diagonal2 = {jButton5, jButton3, jButton7};
-            evaluar(fila);
-            evaluar(columna);
-            evaluar(diagonal1);
-            evaluar(diagonal2);
-            
-            terminar();
-            //
-            
-            b5 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if (b6 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton6.setBorder(circulo);
-                jButton6.setText(circulo.nombreFoto);
-            } else {
-                jButton6.setBorder(x);
-                jButton6.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton6, jButton4, jButton5};
-            JButton[] columna = {jButton6, jButton3, jButton9};
-            evaluar(fila);
-            evaluar(columna);
-            
-            terminar();
-            //
-            
-            b6 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if (b7 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton7.setBorder(circulo);
-                jButton7.setText(circulo.nombreFoto);
-            } else {
-                jButton7.setBorder(x);
-                jButton7.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton7, jButton8, jButton9};
-            JButton[] columna = {jButton7, jButton4, jButton1};
-            JButton[] diagonal = {jButton7, jButton5, jButton3};
-            evaluar(fila);
-            evaluar(columna);
-            evaluar(diagonal);
-            
-            terminar();
-            //
-            
-            b7 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        if (b8 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton8.setBorder(circulo);
-                jButton8.setText(circulo.nombreFoto);
-            } else {
-                jButton8.setBorder(x);
-                jButton8.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton8, jButton7, jButton9};
-            JButton[] columna = {jButton8, jButton5, jButton2};
-            evaluar(fila);
-            evaluar(columna);
-            
-            terminar();
-            //
-            
-            b8 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        if (b9 == false && terminado == false) {
-            if (cont % 2 == 0) {
-                jButton9.setBorder(circulo);
-                jButton9.setText(circulo.nombreFoto);
-            } else {
-                jButton9.setBorder(x);
-                jButton9.setText(x.nombreFoto);
-            }
-            
-            //
-            JButton[] fila = {jButton9, jButton7, jButton8};
-            JButton[] columna = {jButton9, jButton6, jButton3};
-            JButton[] diagonal = {jButton9, jButton5, jButton1};
-            evaluar(fila);
-            evaluar(columna);
-            evaluar(diagonal);
-            
-            terminar();
-            //
-            
-            b9 = true;
-            cont++;
-        }
-    }//GEN-LAST:event_jButton9ActionPerformed
     
-    /**
-     * 
-     * @param botones representa una fila, columna o diagonal para evaluar si 
-     * existe un ganador.
-     */
-    private void evaluar(JButton[] botones) {
-        if (botones[0].getText().equals(botones[1].getText()) && 
-                botones[0].getText().equals(botones[2].getText())) {
-            terminado = true;
-            JOptionPane.showMessageDialog(null, "Gana " + botones[0].getText());
-            jugarDenuevo();
+    private void evaluar(Boton[][] tablero) {
+        //fila
+        for (int i = 0; i < tablero.length; i++) {
+            if (tablero[i][0].getFoto() == tablero[i][1].getFoto() && 
+                    tablero[i][0].getFoto() == tablero[i][2].getFoto()) {
+                if (tablero[i][0].isMarcado()&& tablero[i][1].isMarcado() && 
+                        tablero[i][2].isMarcado()) {
+                    terminado = true;
+                    JOptionPane.showMessageDialog(null, "Gana " + tablero[i][0].getFoto());
+                    break;
+                }
+            }
+        }
+        
+        //columna
+        for (int i = 0; i < tablero.length; i++) {
+            if (tablero[0][i].getFoto() == tablero[1][i].getFoto() && 
+                    tablero[0][i].getFoto() == tablero[2][i].getFoto()) {
+                if (tablero[0][i].isMarcado()&& tablero[1][i].isMarcado() && 
+                        tablero[2][i].isMarcado()) {
+                    terminado = true;
+                    JOptionPane.showMessageDialog(null, "Gana " + tablero[0][i].getFoto());
+                    break;
+                }
+            }
+        }
+        
+        //diagonal 1
+        if (tablero[0][0].getFoto() == tablero[1][1].getFoto() && 
+                tablero[0][0].getFoto() == tablero[2][2].getFoto()) {
+            if (tablero[0][0].isMarcado()&& tablero[1][1].isMarcado() && 
+                        tablero[2][2].isMarcado()) {
+                terminado = true;
+                JOptionPane.showMessageDialog(null, "Gana " + tablero[0][0].getFoto());
+            }
+        }
+        
+        //diagonal 2
+        if (tablero[0][2].getFoto() == tablero[1][1].getFoto() && 
+                tablero[0][2].getFoto() == tablero[2][0].getFoto()) {
+            if (tablero[0][2].isMarcado()&& tablero[1][1].isMarcado() && 
+                        tablero[2][0].isMarcado()) {
+                terminado = true;
+                JOptionPane.showMessageDialog(null, "Gana " + tablero[0][2].getFoto());
+            }
         }
     }
     
     private void terminar() {
-        if (!jButton1.getText().isEmpty() && !jButton2.getText().isEmpty() && 
-                !jButton3.getText().isEmpty() && !jButton4.getText().isEmpty() &&
-                !jButton5.getText().isEmpty() && !jButton6.getText().isEmpty() &&
-                !jButton7.getText().isEmpty() && !jButton8.getText().isEmpty() &&
-                !jButton9.getText().isEmpty() && terminado == false) {
+        boolean marcados = true;
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (!tablero[i][j].isMarcado()) {
+                    marcados = false;
+                }
+            }
+        }
+        
+        if (marcados == true && terminado == false) {
             JOptionPane.showMessageDialog(null, "Juego terminado: no hay ganador");
-            jugarDenuevo();
+            terminado = true;
         }
     }
     
     private void jugarDenuevo() {
-        int opcion = JOptionPane.showConfirmDialog(null, "¿Jugar denuevo?", 
-                "¿Jugar denuevo=", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (opcion == JOptionPane.YES_OPTION) {
-            dispose();
-            main(null);
+        if (terminado) {
+            int opcion = JOptionPane.showConfirmDialog(null, "¿Jugar denuevo?", 
+                    "¿Jugar denuevo=", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (opcion == JOptionPane.YES_OPTION) {
+                dispose();
+                main(null);
+            } else {
+                System.exit(0);
+            }
         }
     }
     
@@ -465,16 +229,40 @@ public class TicTacToe extends javax.swing.JFrame {
             }
         });
     }
+    
+    
 
+//        if (b1 == false && terminado == false) {
+//            if (cont % 2 == 0) {
+//                jButton1.setBorder(circulo);
+//                jButton1.setText(circulo.nombreFoto);
+//            } else {
+//                jButton1.setBorder(x);
+//                jButton1.setText(x.nombreFoto);
+//            }
+//            
+//            //
+//            JButton[] fila = {jButton1, jButton2, jButton3};
+//            JButton[] columna = {jButton1, jButton4, jButton7};
+//            JButton[] diagonal = {jButton1, jButton5, jButton9};
+//            evaluar(fila);
+//            evaluar(columna);
+//            evaluar(diagonal);
+//            
+//            terminar();
+//            //
+//            
+//            b1 = true;
+//            cont++;
+//        }
+    
+    
+    
+    
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     // End of variables declaration//GEN-END:variables
+
 }
